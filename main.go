@@ -1,35 +1,35 @@
-// Sample run-helloworld is a minimal Cloud Run service.
 package main
 
 import (
 	"fmt"
+	"io/ioutil"
 	"log"
 	"net/http"
-	"os"
+
+	"github.com/gorilla/mux"
 )
 
 func main() {
-	log.Print("starting server...")
-	http.HandleFunc("/", handler)
+	fmt.Println("server start")
 
-	// Determine port for HTTP service.
-	port := os.Getenv("PORT")
-	if port == "" {
-		port = "8080"
-		log.Printf("defaulting to port %s", port)
-	}
+	router := mux.NewRouter().StrictSlash(true)
 
-	// Start HTTP server.
-	log.Printf("listening on port %s", port)
-	if err := http.ListenAndServe(":"+port, nil); err != nil {
-		log.Fatal(err)
-	}
+	var handler http.Handler
+	var HandlerFunc http.HandlerFunc
+	HandlerFunc = testhandle
+	handler = HandlerFunc
+
+	router.Methods("GET").Path("/").Handler(handler)
+	router.Methods("POST").Path("/").Handler(handler)
+
+	log.Fatal(http.ListenAndServe(":8080", router))
 }
 
-func handler(w http.ResponseWriter, r *http.Request) {
-	name := os.Getenv("NAME")
-	if name == "" {
-		name = "World"
+func testhandle(w http.ResponseWriter, r *http.Request) {
+	b, err := ioutil.ReadAll(r.Body)
+	if err != nil {
+		fmt.Println(err)
+		return
 	}
-	fmt.Fprintf(w, "Hello %s!\n", name)
+	fmt.Fprintf(w, string(b))
 }
