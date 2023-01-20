@@ -27,7 +27,7 @@ timeout: "1800s"
 # ユーザー定義変数
 substitutions:
   _SERVICE_NAME: "hello-world"
-  _IMAGE_NAME: "asia-northeast1-docker.pkg.dev/ca-saki-tomita-test/ca-sakitomi-todo-repo/test-image-0120:test"
+  _IMAGE_NAME: "asia-northeast1-docker.pkg.dev/ca-saki-tomita-test/ca-sakitomi-todo-repo/test-image-0119:test"
 
 images:
   - "${_IMAGE_NAME}"
