@@ -22,8 +22,8 @@ steps:
         "--allow-unauthenticated",
       ]
 
-# 今回は30分にしてみる
-timeout: "1800s"
+# 今回は20分にしてみる
+timeout: "1200s"
 
 # ユーザー定義変数
 substitutions:
